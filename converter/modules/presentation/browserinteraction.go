@@ -120,7 +120,6 @@ func renderFrames(config config.Data, presentation Presentation) chromedp.Tasks 
 				}
 				_, _, _ = runtime.Evaluate(actionString).Do(ctx)
 				var buf []byte
-				// implement advanced solution to prevent same images or invalid cursor pos which lead to heavy runtimes
 				err := chromedp.FullScreenshot(&buf, 90).Do(ctx)
 				if err != nil {
 					log.Fatal(err)

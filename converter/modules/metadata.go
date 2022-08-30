@@ -31,6 +31,5 @@ func GetDuration(config config.Data) (int, error) {
 	if err != nil {
 		return 0, err
 	}
-	// It seems to be ms, but we want seconds so /1000 .
 	return recording.Playback.Duration / 1000, nil
 }
