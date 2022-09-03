@@ -13,6 +13,7 @@ type Data struct {
 	RecordingDir string
 	OutputFile   string
 	WorkingDir   string
+	ThreadCount  string
 }
 
 func (c *Data) LoadConfig() error {
@@ -23,6 +24,8 @@ func (c *Data) LoadConfig() error {
 		"Specify output file. Default is video.mp4 in the recording dir.")
 	flag.BoolVar(&showVersion, "v", false,
 		"Show current version.")
+	flag.StringVar(&c.ThreadCount, "t", "1",
+		"Thread count, default 1")
 	flag.Usage = func() {
 		fmt.Println("Usage:")
 		fmt.Println("bbb-video-converter -v")

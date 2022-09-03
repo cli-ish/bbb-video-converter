@@ -59,7 +59,7 @@ func combinedSlidesAndDeskshares(slideVideo modules.Video, deskData deskshareDat
 	resizedDeskshareVideo := path.Join(config.WorkingDir, "deskshare.mp4")
 	presentationOut := path.Join(config.WorkingDir, "presentation.mp4")
 	presentationTmp := path.Join(config.WorkingDir, "presentation.tmp.mp4")
-	_, err = exec.Command("ffmpeg", "-hide_banner", "-loglevel", "error", "-threads", "1", "-i", deskData.Video.VideoPath, "-vf", "scale=w="+fmt.Sprint(info.Width)+":h="+fmt.Sprint(info.Height)+":force_original_aspect_ratio=1,pad="+fmt.Sprint(info.Width)+":"+fmt.Sprint(info.Height)+":(ow-iw)/2:(oh-ih)/2:color=white", "-c:v", "libx264", "-preset", "ultrafast", resizedDeskshareVideo).Output()
+	_, err = exec.Command("ffmpeg", "-hide_banner", "-loglevel", "error", "-threads", config.ThreadCount, "-i", deskData.Video.VideoPath, "-vf", "scale=w="+fmt.Sprint(info.Width)+":h="+fmt.Sprint(info.Height)+":force_original_aspect_ratio=1,pad="+fmt.Sprint(info.Width)+":"+fmt.Sprint(info.Height)+":(ow-iw)/2:(oh-ih)/2:color=white", "-c:v", "libx264", "-preset", "ultrafast", resizedDeskshareVideo).Output()
 	if err != nil {
 		return modules.Video{}
 	}
@@ -68,7 +68,7 @@ func combinedSlidesAndDeskshares(slideVideo modules.Video, deskData deskshareDat
 		if i != 0 {
 			presIn = presentationOut
 		}
-		_, err = exec.Command("ffmpeg", "-hide_banner", "-loglevel", "error", "-threads", "1", "-i", presIn, "-i", resizedDeskshareVideo, "-filter_complex", "[0][1]overlay=x=0:y=0:enable='between(t,"+fmt.Sprint(v.Start)+","+fmt.Sprint(v.End)+")'[out]", "-map", "[out]", "-c:a", "copy", "-c:v", "libx264", "-preset", "ultrafast", presentationTmp).Output()
+		_, err = exec.Command("ffmpeg", "-hide_banner", "-loglevel", "error", "-threads", config.ThreadCount, "-i", presIn, "-i", resizedDeskshareVideo, "-filter_complex", "[0][1]overlay=x=0:y=0:enable='between(t,"+fmt.Sprint(v.Start)+","+fmt.Sprint(v.End)+")'[out]", "-map", "[out]", "-c:a", "copy", "-c:v", "libx264", "-preset", "ultrafast", presentationTmp).Output()
 		if err != nil {
 			return modules.Video{}
 		}

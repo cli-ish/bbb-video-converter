@@ -50,7 +50,7 @@ func CreateCaptions(config config.Data) ([]Caption, error) {
 
 func AddCaption(captions []Caption, config config.Data, fullVideo Video) error {
 	tmpFile := path.Join(config.WorkingDir, "video.caption.tmp.mp4")
-	cmd := []string{"-hide_banner", "-loglevel", "error", "-threads", "1", "-i", fullVideo.VideoPath}
+	cmd := []string{"-hide_banner", "-loglevel", "error", "-threads", config.ThreadCount, "-i", fullVideo.VideoPath}
 	for _, v := range captions {
 		cmd = append(cmd, "-i", v.File)
 	}
@@ -85,7 +85,7 @@ func transformCaptions(config config.Data, Locale string) (Caption, error) {
 	captionCode := langs.LanguageList[Locale].Two
 	captionInFile := path.Join(config.RecordingDir, "caption_"+Locale+".vtt")
 	captionOutFile := path.Join(config.WorkingDir, "caption_"+captionCode+".srt")
-	_, err := exec.Command("ffmpeg", "-hide_banner", "-loglevel", "-warning", "-i", captionInFile, captionOutFile).Output()
+	_, err := exec.Command("ffmpeg", "-hide_banner", "-threads", config.ThreadCount, "-loglevel", "-warning", "-i", captionInFile, captionOutFile).Output()
 	if err != nil {
 		return Caption{}, err
 	}

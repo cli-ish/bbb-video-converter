@@ -1,8 +1,29 @@
 # Golang port of tilmanmoser/bbb-video-download
 
 Benefits of this port:
-* Optimized for faster runtime. (650% faster when it's not in deskshare mode)
+
+* Optimized for faster runtime. (600% faster with 6 threads & when it's not in deskshare mode)
 * No Node.js, so no troubles with node versions conflicts and packages
+
+# Comparison
+
+| Type                         | Node.js     | Go (1 Thread)    | Performance increase            |
+|------------------------------|-------------|------------------|---------------------------------|
+| Long recording no drawings   | 885s        | 892s             | ~ 0%                            |
+| Big canvas not long duration | 43s         | 17s              | ~ 252%                          |
+| 4h long with a lot of slides | 4455s       | 1851s            | ~ 240%                          |
+
+The new go implementation is scalable over the -t tag which is not yet implemented in the node.js version.
+
+With the same recording above "4h long with a lot of slides" we get the new times:
+
+| Thread count | Time  | Speed increase (compared to node.js) |
+|--------------|-------|--------------------------------------|
+| 2            | 1115s | ~ 400%                               |
+| 3            | 905s  | ~ 490%                               |
+| 4            | 813s  | ~ 540%                               |
+| 5            | 773s  | ~ 570%                               |
+| 6            | 734s  | ~ 600%                               |
 
 # Basic installation
 

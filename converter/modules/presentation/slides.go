@@ -48,7 +48,6 @@ func renderSlides(config config.Data, duration int) modules.Video {
 		start := time.Now()
 		infos, err := captureFrames(config, presentation)
 		if err != nil {
-			log.Println(err)
 			return modules.Video{}
 		}
 		end := time.Now().Sub(start)
@@ -88,8 +87,8 @@ func renderVideo(presentation Presentation, config config.Data, infos map[float6
 		return modules.Video{}
 	}
 	result := modules.Video{}
-	result.VideoPath = path.Join(path.Join(config.WorkingDir, "slides.mp4"))
-	_, err = exec.Command("ffmpeg", "-safe", "0", "-hide_banner", "-loglevel", "error", "-f", "concat", "-i", slidesTxtFile, "-threads", "1", "-y", "-strict", "-2", "-crf", "22", "-preset", "ultrafast", "-t", fmt.Sprint(durationReal), "-c", "copy", "-pix_fmt", "yuv420p", result.VideoPath).Output()
+	result.VideoPath = path.Join(config.WorkingDir, "slides.mp4")
+	_, err = exec.Command("ffmpeg", "-safe", "0", "-hide_banner", "-loglevel", "error", "-f", "concat", "-i", slidesTxtFile, "-threads", config.ThreadCount, "-y", "-strict", "-2", "-crf", "22", "-preset", "ultrafast", "-t", fmt.Sprint(durationReal), "-c", "copy", "-pix_fmt", "yuv420p", result.VideoPath).Output()
 	if err != nil {
 		return modules.Video{}
 	}

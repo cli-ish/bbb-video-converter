@@ -1,6 +1,7 @@
 package modules
 
 import (
+	"bbb-video-converter/config"
 	"encoding/json"
 	"errors"
 	"log"
@@ -51,8 +52,8 @@ func GetVideoInfo(videofile string) (Video, error) {
 	}, nil
 }
 
-func (v *Video) IsAllWhiteVideo(duration int) bool {
-	out, err := exec.Command("ffmpeg", "-i", v.VideoPath, "-vf", "negate,blackdetect=d=2:pix_th=0.00", "-an", "-f", "null", "-").CombinedOutput()
+func (v *Video) IsAllWhiteVideo(duration int, config config.Data) bool {
+	out, err := exec.Command("ffmpeg", "-i", v.VideoPath, "-threads", config.ThreadCount, "-vf", "negate,blackdetect=d=2:pix_th=0.00", "-an", "-f", "null", "-").CombinedOutput()
 	if err != nil {
 		return false
 	}

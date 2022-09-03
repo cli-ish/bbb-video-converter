@@ -5,12 +5,14 @@ import (
 	"bbb-video-converter/converter/modules"
 	"bbb-video-converter/converter/modules/presentation"
 	"errors"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
 	"os"
 	"strings"
 	"sync"
+	"time"
 )
 
 type Converter struct {
@@ -54,11 +56,13 @@ func (c *Converter) Run(config config.Data) error {
 		captions, _ = modules.CreateCaptions(config)
 	}()
 	wg.Wait()
-
+	start := time.Now()
 	fullVideo, err := modules.CombinePresentationWithWebcams(presentationVideo, webcamVideo, config)
 	if err != nil {
 		return err
 	}
+	end := time.Now().Sub(start)
+	log.Println("Combine presentation with webcam video took: " + fmt.Sprint(end))
 
 	if len(captions) > 0 {
 		err = modules.AddCaption(captions, config, fullVideo)
@@ -66,6 +70,7 @@ func (c *Converter) Run(config config.Data) error {
 			// Todo: should we really exit here if the caption thrown an error ?
 			return err
 		}
+		log.Println("Added caption data to video")
 	}
 	if strings.HasSuffix(config.OutputFile, ".webm") {
 		err = modules.ProcessToEndExtension(fullVideo, config)

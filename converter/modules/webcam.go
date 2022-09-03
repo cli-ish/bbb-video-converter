@@ -11,7 +11,7 @@ func GetWebcamVideos(config config.Data, duration int) (Video, error) {
 	webcamPath := ""
 	formats := []string{"mp4", "webm"}
 	for _, format := range formats {
-		webcamPathTmp := path.Join(config.RecordingDir, "video/webcams."+format)
+		webcamPathTmp := path.Join(config.RecordingDir, "video", "webcams."+format)
 		_, err := os.Stat(webcamPathTmp)
 		if err == nil {
 			webcamPath = webcamPathTmp
@@ -25,6 +25,6 @@ func GetWebcamVideos(config config.Data, duration int) (Video, error) {
 	if err != nil {
 		return Video{}, err
 	}
-	videoInfo.IsOnlyAudio = videoInfo.IsAllWhiteVideo(duration)
+	videoInfo.IsOnlyAudio = videoInfo.IsAllWhiteVideo(duration, config)
 	return videoInfo, nil
 }
