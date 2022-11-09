@@ -6,8 +6,7 @@ RUN mkdir -p /srv/bbb-convert /srv/bbb-convert/release
 WORKDIR /srv/bbb-convert
 COPY . .
 RUN go get -d -v
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags='-w -s -extldflags "-static"' -a \
-        -o /srv/bbb-convert/release/bbb-convert
+RUN GOARCH=amd64 go build -o /srv/bbb-convert/release/bbb-convert
 
 FROM alpine:3.11
 RUN apk add --no-cache chromium ffmpeg

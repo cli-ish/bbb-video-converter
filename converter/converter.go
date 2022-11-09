@@ -39,6 +39,7 @@ func (c *Converter) Run(config config.Data) error {
 	var wg sync.WaitGroup
 	var webcamVideo modules.Video
 	var presentationVideo modules.Video
+	var chatVideo modules.Video
 	var captions []modules.Caption
 	wg.Add(1)
 	go func() {
@@ -55,9 +56,18 @@ func (c *Converter) Run(config config.Data) error {
 		defer wg.Done()
 		captions, _ = modules.CreateCaptions(config)
 	}()
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		data, err := presentation.GetChatMessages(config)
+		if err != nil {
+			return
+		}
+		chatVideo = presentation.RenderMessageFrames(data, config, duration)
+	}()
 	wg.Wait()
 	start := time.Now()
-	fullVideo, err := modules.CombinePresentationWithWebcams(presentationVideo, webcamVideo, config)
+	fullVideo, err := modules.CombineVideos(presentationVideo, webcamVideo, chatVideo, config)
 	if err != nil {
 		return err
 	}

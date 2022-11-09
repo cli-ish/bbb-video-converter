@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Chat</title>
+    <style>
+        body, html, .container {
+            width: 300px;
+        }
+
+        .container {
+            overflow: visible;
+            overflow-wrap: break-word;
+        }
+
+        .container .item {
+            visibility: hidden;
+        }
+
+        .container .item.shown {
+            visibility: visible;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    {{ range . }}
+        <div class="item" data-time="{{.In}}">{{.Author}}: {{.Text}}</div>
+    {{ end }}
+</div>
+</body>
+</html>

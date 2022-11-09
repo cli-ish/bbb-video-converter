@@ -34,8 +34,8 @@ const (
 	CursorViewHidden  int = -1
 )
 
-func captureFrames(config config.Data, presentation Presentation) (map[float64]FrameInfo, error) {
-	opts := []chromedp.ExecAllocatorOption{
+func GetChromeDpSettings() []chromedp.ExecAllocatorOption {
+	return []chromedp.ExecAllocatorOption{
 		chromedp.NoDefaultBrowserCheck,
 		chromedp.NoFirstRun,
 		chromedp.NoSandbox,
@@ -64,7 +64,10 @@ func captureFrames(config config.Data, presentation Presentation) (map[float64]F
 		chromedp.Flag("password-store", "basic"),
 		chromedp.Flag("use-mock-keychain", true),
 	}
-	browserCtx, cancelA := chromedp.NewExecAllocator(context.Background(), opts...)
+}
+
+func captureFrames(config config.Data, presentation Presentation) (map[float64]FrameInfo, error) {
+	browserCtx, cancelA := chromedp.NewExecAllocator(context.Background(), GetChromeDpSettings()...)
 	defer cancelA()
 	frameInfos, err := renderFrames(browserCtx, config, presentation)
 	return frameInfos, err
@@ -191,7 +194,7 @@ func renderFrames(browserCtx context.Context, config config.Data, presentation P
 							_, _, _ = runtime.Evaluate(actionString).Do(ctx)
 							actionString = ""
 							var buf []byte
-							err := chromedp.FullScreenshot(&buf, 90).Do(ctx)
+							err = chromedp.FullScreenshot(&buf, 90).Do(ctx)
 							if err != nil {
 								log.Fatal(err)
 								return err
