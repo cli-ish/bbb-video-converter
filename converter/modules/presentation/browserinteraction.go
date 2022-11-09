@@ -83,6 +83,11 @@ func renderFrames(browserCtx context.Context, config config.Data, presentation P
 		frameCaptureThreads = 1
 	}
 	stepSize := len(timestamps) / frameCaptureThreads
+	if stepSize < 1 {
+		// We got to less work for the given threads!
+		frameCaptureThreads = 1
+		stepSize = len(timestamps) / frameCaptureThreads
+	}
 	var coWaiter sync.WaitGroup
 	var mutex = &sync.Mutex{}
 	for i := 1; i < frameCaptureThreads+1; i++ {
