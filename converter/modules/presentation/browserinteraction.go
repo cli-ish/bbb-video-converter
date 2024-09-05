@@ -39,6 +39,8 @@ func captureFrames(config config.Data, presentation Presentation) (map[float64]F
 		chromedp.NoFirstRun,
 		chromedp.NoSandbox,
 		chromedp.Headless,
+		chromedp.DisableGPU,
+		chromedp.Flag("disable-gpu", true),
 		chromedp.Flag("disable-setuid-sandbox", true),
 		chromedp.Flag("disable-background-networking", true),
 		chromedp.Flag("enable-features", "NetworkService,NetworkServiceInProcess"),
@@ -63,9 +65,12 @@ func captureFrames(config config.Data, presentation Presentation) (map[float64]F
 		chromedp.Flag("password-store", "basic"),
 		chromedp.Flag("use-mock-keychain", true),
 	}
+	log.Println("Lets connect to the chrome instance...")
 	browserCtx, cancelA := chromedp.NewExecAllocator(context.Background(), opts...)
 	defer cancelA()
+	log.Println("Lets render the frames...")
 	frameInfos, err := renderFrames(browserCtx, config, presentation)
+	log.Println("Done.")
 	return frameInfos, err
 }
 
