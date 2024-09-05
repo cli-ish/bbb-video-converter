@@ -4,7 +4,7 @@ import (
 	"bbb-video-converter/config"
 	"bbb-video-converter/converter/modules"
 	"encoding/xml"
-	"io/ioutil"
+	"io"
 	"os"
 	"path"
 )
@@ -40,7 +40,7 @@ func parseDeskshares(config config.Data) deskshareData {
 		deskshareFile, err := os.Open(desksharePath)
 		if err == nil {
 			defer deskshareFile.Close()
-			byteValue, _ := ioutil.ReadAll(deskshareFile)
+			byteValue, _ := io.ReadAll(deskshareFile)
 			var rec recordingDeskshare
 			err = xml.Unmarshal(byteValue, &rec)
 			data := deskshareData{}

@@ -2,7 +2,7 @@ package presentation
 
 import (
 	"encoding/xml"
-	"io/ioutil"
+	"io"
 	"os"
 	"path"
 )
@@ -24,7 +24,7 @@ func parsePanzooms(recordingDir string, duration int) map[float64]Frame {
 		panzoomFile, err := os.Open(panzoomPath)
 		if err == nil {
 			defer panzoomFile.Close()
-			byteValue, _ := ioutil.ReadAll(panzoomFile)
+			byteValue, _ := io.ReadAll(panzoomFile)
 			var rec recording
 			err = xml.Unmarshal(byteValue, &rec)
 			if err != nil {

@@ -3,11 +3,11 @@ package presentation
 import (
 	"bbb-video-converter/config"
 	"bbb-video-converter/converter/modules"
+	"bbb-video-converter/util"
 	"fmt"
 	"log"
 	"math"
 	"os"
-	"os/exec"
 	"path"
 	"sort"
 	"sync"
@@ -88,7 +88,7 @@ func renderVideo(presentation Presentation, config config.Data, infos map[float6
 	}
 	result := modules.Video{}
 	result.VideoPath = path.Join(config.WorkingDir, "slides.mp4")
-	_, err = exec.Command("ffmpeg", "-safe", "0", "-hide_banner", "-loglevel", "error", "-f", "concat", "-i", slidesTxtFile, "-threads", config.ThreadCount, "-y", "-strict", "-2", "-crf", "22", "-preset", "ultrafast", "-t", fmt.Sprint(durationReal), "-c", "copy", "-pix_fmt", "yuv420p", result.VideoPath).Output()
+	_, err = util.ExecuteCommand("ffmpeg", "-safe", "0", "-hide_banner", "-loglevel", "error", "-f", "concat", "-i", slidesTxtFile, "-threads", config.ThreadCount, "-y", "-strict", "-2", "-crf", "22", "-preset", "ultrafast", "-t", fmt.Sprint(durationReal), "-c:v", "libx264", "-pix_fmt", "yuv420p", result.VideoPath).Output()
 	if err != nil {
 		return modules.Video{}
 	}

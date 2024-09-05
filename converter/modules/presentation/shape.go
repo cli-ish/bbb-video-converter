@@ -2,7 +2,7 @@ package presentation
 
 import (
 	"encoding/xml"
-	"io/ioutil"
+	"io"
 	"math"
 	"os"
 	"path"
@@ -44,7 +44,7 @@ func parseShapes(recordingDir string, duration int) (map[float64]Frame, float64,
 		shapeFile, err := os.Open(shapePath)
 		if err == nil {
 			defer shapeFile.Close()
-			byteValue, _ := ioutil.ReadAll(shapeFile)
+			byteValue, _ := io.ReadAll(shapeFile)
 			var shapes shapes
 			err = xml.Unmarshal(byteValue, &shapes)
 			if err != nil {

@@ -7,7 +7,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"os"
 	"strings"
@@ -19,7 +18,7 @@ type Converter struct {
 }
 
 func (c *Converter) Run(config config.Data) error {
-	workingDir, err := ioutil.TempDir(os.TempDir(), "converter-*-data")
+	workingDir, err := os.MkdirTemp(os.TempDir(), "converter-*-data")
 	if err != nil {
 		return errors.New("could not create temporary working directory")
 	}

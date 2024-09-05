@@ -2,11 +2,11 @@ package modules
 
 import (
 	"bbb-video-converter/config"
+	"bbb-video-converter/util"
 	"errors"
 	"fmt"
 	"math"
 	"os"
-	"os/exec"
 	"path"
 )
 
@@ -43,7 +43,7 @@ func CombinePresentationWithWebcams(presentation Video, webcam Video, config con
 }
 
 func copyWebcamsVideo(webcam Video, videoPath string, config config.Data) error {
-	_, err := exec.Command("ffmpeg", "-hide_banner", "-loglevel", "error", "-threads", config.ThreadCount, "-i", webcam.VideoPath, "-y", videoPath).Output()
+	_, err := util.ExecuteCommand("ffmpeg", "-hide_banner", "-loglevel", "error", "-threads", config.ThreadCount, "-i", webcam.VideoPath, "-y", videoPath).Output()
 	if err != nil {
 		return err
 	}
@@ -51,7 +51,7 @@ func copyWebcamsVideo(webcam Video, videoPath string, config config.Data) error 
 }
 
 func copyWebcamsAudioToPresentation(presentation Video, webcam Video, videoPath string, config config.Data) error {
-	_, err := exec.Command("ffmpeg", "-hide_banner", "-loglevel", "error", "-threads", config.ThreadCount, "-i", presentation.VideoPath, "-i", webcam.VideoPath, "-c:v", "copy", "-c:a", "aac", "-map", "0:0", "-map", "1:1", "-shortest", "-preset", "ultrafast", "-y", videoPath).Output()
+	_, err := util.ExecuteCommand("ffmpeg", "-hide_banner", "-loglevel", "error", "-threads", config.ThreadCount, "-i", presentation.VideoPath, "-i", webcam.VideoPath, "-c:v", "copy", "-c:a", "aac", "-map", "0:0", "-map", "1:1", "-shortest", "-preset", "ultrafast", "-y", videoPath).Output()
 	if err != nil {
 		return err
 	}
@@ -64,7 +64,7 @@ func stackWebcamsToPresentation(presentation Video, webcam Video, videoPath stri
 	if int(height)%2 == 1 {
 		height += 1
 	}
-	_, err := exec.Command("ffmpeg", "-hide_banner", "-loglevel", "error", "-threads", config.ThreadCount, "-i", presentation.VideoPath, "-i", webcam.VideoPath, "-filter_complex", "[0:v]pad=width="+fmt.Sprint(width)+":height="+fmt.Sprint(height)+":color=white[p];[p][1:v]overlay=x="+fmt.Sprint(presentation.Width)+":y=0[out]", "-map", "[out]", "-map", "1:1", "-c:a", "aac", "-shortest", "-y", videoPath).Output()
+	_, err := util.ExecuteCommand("ffmpeg", "-hide_banner", "-loglevel", "error", "-threads", config.ThreadCount, "-i", presentation.VideoPath, "-i", webcam.VideoPath, "-filter_complex", "[0:v]pad=width="+fmt.Sprint(width)+":height="+fmt.Sprint(height)+":color=white[p];[p][1:v]overlay=x="+fmt.Sprint(presentation.Width)+":y=0[out]", "-map", "[out]", "-map", "1:1", "-c:a", "aac", "-shortest", "-y", videoPath).Output()
 	if err != nil {
 		return err
 	}
@@ -72,7 +72,7 @@ func stackWebcamsToPresentation(presentation Video, webcam Video, videoPath stri
 }
 
 func ProcessToEndExtension(input Video, config config.Data) error {
-	_, err := exec.Command("ffmpeg", "-hide_banner", "-loglevel", "error", "-threads", config.ThreadCount, "-i", input.VideoPath, "-y", config.OutputFile).Output()
+	_, err := util.ExecuteCommand("ffmpeg", "-hide_banner", "-loglevel", "error", "-threads", config.ThreadCount, "-i", input.VideoPath, "-y", config.OutputFile).Output()
 	if err != nil {
 		return err
 	}

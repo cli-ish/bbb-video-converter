@@ -3,11 +3,11 @@ package modules
 import (
 	"bbb-video-converter/config"
 	"bbb-video-converter/converter/modules/langs"
+	"bbb-video-converter/util"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"os"
-	"os/exec"
 	"path"
 )
 
@@ -31,7 +31,7 @@ func CreateCaptions(config config.Data) ([]Caption, error) {
 	if err != nil {
 		return []Caption{}, err
 	}
-	byteValue, _ := ioutil.ReadAll(xmlFile)
+	byteValue, _ := io.ReadAll(xmlFile)
 	var captions []caption
 	err = json.Unmarshal(byteValue, &captions)
 	if err != nil {
@@ -66,7 +66,7 @@ func AddCaption(captions []Caption, config config.Data, fullVideo Video) error {
 		cmd = append(cmd, "-metadata:s:s:"+fmt.Sprint(i), "language="+v.Code)
 	}
 	cmd = append(cmd, "-y", tmpFile)
-	_, err := exec.Command("ffmpeg", cmd...).Output()
+	_, err := util.ExecuteCommand("ffmpeg", cmd...).Output()
 	if err != nil {
 		return err
 	}
@@ -85,7 +85,7 @@ func transformCaptions(config config.Data, Locale string) (Caption, error) {
 	captionCode := langs.LanguageList[Locale].Two
 	captionInFile := path.Join(config.RecordingDir, "caption_"+Locale+".vtt")
 	captionOutFile := path.Join(config.WorkingDir, "caption_"+captionCode+".srt")
-	_, err := exec.Command("ffmpeg", "-hide_banner", "-threads", config.ThreadCount, "-loglevel", "-warning", "-i", captionInFile, captionOutFile).Output()
+	_, err := util.ExecuteCommand("ffmpeg", "-hide_banner", "-threads", config.ThreadCount, "-loglevel", "-warning", "-i", captionInFile, captionOutFile).Output()
 	if err != nil {
 		return Caption{}, err
 	}

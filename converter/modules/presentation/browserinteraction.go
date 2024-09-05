@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"github.com/chromedp/cdproto/runtime"
 	"github.com/chromedp/chromedp"
-	"io/ioutil"
 	"log"
 	"os"
 	"path"
@@ -213,7 +212,7 @@ func renderFrames(browserCtx context.Context, config config.Data, presentation P
 								mutex.Unlock()
 								_, err = os.Stat(iPath)
 								if os.IsNotExist(err) {
-									if errWrite := ioutil.WriteFile(iPath, buffer, 0o644); errWrite != nil {
+									if errWrite := os.WriteFile(iPath, buffer, 0o644); errWrite != nil {
 										log.Fatal(errWrite)
 									}
 								}

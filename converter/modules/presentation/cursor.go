@@ -2,7 +2,7 @@ package presentation
 
 import (
 	"encoding/xml"
-	"io/ioutil"
+	"io"
 	"os"
 	"path"
 )
@@ -24,7 +24,7 @@ func parseCursors(recordingDir string, duration int) map[float64]Frame {
 		cursorFile, err := os.Open(cursorPath)
 		if err == nil {
 			defer cursorFile.Close()
-			byteValue, _ := ioutil.ReadAll(cursorFile)
+			byteValue, _ := io.ReadAll(cursorFile)
 			var rec cursorRecording
 			err = xml.Unmarshal(byteValue, &rec)
 			if err != nil {

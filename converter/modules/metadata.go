@@ -4,7 +4,7 @@ import (
 	"bbb-video-converter/config"
 	"encoding/xml"
 	"errors"
-	"io/ioutil"
+	"io"
 	"os"
 	"path"
 )
@@ -25,7 +25,7 @@ func GetDuration(config config.Data) (int, error) {
 	if err != nil {
 		return 0, errors.New("directory (" + config.RecordingDir + ") is not a bbb recording dir, the metadata.xml file is missing")
 	}
-	byteValue, _ := ioutil.ReadAll(xmlFile)
+	byteValue, _ := io.ReadAll(xmlFile)
 	var recording Recording
 	err = xml.Unmarshal(byteValue, &recording)
 	if err != nil {
