@@ -68,6 +68,7 @@ func captureFrames(config config.Data, presentation Presentation) (map[float64]F
 	log.Println("Lets connect to the chrome instance...")
 	browserCtx, cancelA := chromedp.NewExecAllocator(context.Background(), opts...)
 	defer cancelA()
+
 	log.Println("Lets render the frames...")
 	frameInfos, err := renderFrames(browserCtx, config, presentation)
 	log.Println("Done.")
@@ -122,6 +123,7 @@ func renderFrames(browserCtx context.Context, config config.Data, presentation P
 				log.Println("start:", err)
 			}
 			if err := chromedp.Run(ctx, chromedp.Tasks{
+				chromedp.EmulateViewport(config.Width, config.Height),
 				chromedp.Navigate("file://" + path.Join(config.RecordingDir, "/shapes.svg")),
 				chromedp.ActionFunc(func(ctx context.Context) error {
 					defineFunctions(ctx)
@@ -238,7 +240,7 @@ func renderFrames(browserCtx context.Context, config config.Data, presentation P
 
 func defineFunctions(ctx context.Context) {
 	functions := []string{
-		"var svgfile=document.querySelector('#svgfile');svgfile.innerHTML+='<circle id=\"cursor\" cx=\"9999\" cy=\"9999\" r=\"5\" stroke=\"red\" stroke-width=\"3\" fill=\"red\" style=\"visibility:hidden\" />';var cursor=document.querySelector('#cursor');",
+		"var svgfile=document.querySelector('#svgfile');svgfile.style.width=\"unset\";svgfile.style.maxWidth=\"100%\";svgfile.style.height=\"auto\";svgfile.innerHTML+='<circle id=\"cursor\" cx=\"9999\" cy=\"9999\" r=\"5\" stroke=\"red\" stroke-width=\"3\" fill=\"red\" style=\"visibility:hidden\" />';var cursor=document.querySelector('#cursor');",
 		"function sI(id){let el=document.querySelector('#'+id).style.visibility='visible';let canvas=document.querySelector('#canvas'+id.match(/\\d+/));if(canvas){canvas.setAttribute('display','block');}}",
 		"function hI(id){let el=document.querySelector('#'+id).style.visibility='hidden';let canvas=document.querySelector('#canvas'+id.match(/\\d+/));if(canvas){canvas.setAttribute('display','none');}}",
 		"function sD(id){let drawing=document.querySelector('#'+id);document.querySelectorAll('[shape='+drawing.getAttribute('shape')+']').forEach(element=>{element.style.visibility='hidden'});drawing.style.visibility='visible';}",

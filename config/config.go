@@ -14,6 +14,8 @@ type Data struct {
 	OutputFile   string
 	WorkingDir   string
 	ThreadCount  string
+	Width        int64
+	Height       int64
 }
 
 func (c *Data) LoadConfig() error {
@@ -26,6 +28,10 @@ func (c *Data) LoadConfig() error {
 		"Show current version.")
 	flag.StringVar(&c.ThreadCount, "t", "1",
 		"Thread count, default 1")
+	flag.Int64Var(&c.Width, "w", 800,
+		"Browser width, default 800.")
+	flag.Int64Var(&c.Height, "h", 600,
+		"Browser height, default 600.")
 	flag.Usage = func() {
 		fmt.Println("Usage:")
 		fmt.Println("bbb-video-converter -v")
