@@ -1,13 +1,13 @@
 package presentation
 
 import (
-	"bbb-video-converter/config"
 	"context"
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
 	"github.com/chromedp/cdproto/runtime"
 	"github.com/chromedp/chromedp"
+	"github.com/cli-ish/bbb-video-converter/internal/config"
 	"log"
 	"os"
 	"path"

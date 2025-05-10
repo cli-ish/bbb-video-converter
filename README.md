@@ -48,3 +48,10 @@ cd bbb-video-converter
 docker build -t bbb-converter .
 docker run -v /var/bigbluebutton/published/presentation/{internalid}:/recdir bbb-converter -i /recdir -o video.mp4
 ```
+
+# Fetch with go install
+```bash
+# Install dependencies (ffmpeg) over apt/apk/pacman
+go install github.com/cli-ish/bbb-video-converter@latest
+bbb-video-converter -v
+```

@@ -1,10 +1,10 @@
 package modules
 
 import (
-	"bbb-video-converter/config"
-	"bbb-video-converter/util"
 	"errors"
 	"fmt"
+	"github.com/cli-ish/bbb-video-converter/internal/config"
+	"github.com/cli-ish/bbb-video-converter/internal/util"
 	"math"
 	"os"
 	"path"

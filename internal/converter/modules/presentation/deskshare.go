@@ -1,9 +1,9 @@
 package presentation
 
 import (
-	"bbb-video-converter/config"
-	"bbb-video-converter/converter/modules"
 	"encoding/xml"
+	"github.com/cli-ish/bbb-video-converter/internal/config"
+	"github.com/cli-ish/bbb-video-converter/internal/converter/modules"
 	"io"
 	"os"
 	"path"

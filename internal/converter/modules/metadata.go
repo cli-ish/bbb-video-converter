@@ -1,9 +1,9 @@
 package modules
 
 import (
-	"bbb-video-converter/config"
 	"encoding/xml"
 	"errors"
+	"github.com/cli-ish/bbb-video-converter/internal/config"
 	"io"
 	"os"
 	"path"

@@ -1,10 +1,10 @@
 package presentation
 
 import (
-	"bbb-video-converter/config"
-	"bbb-video-converter/converter/modules"
-	"bbb-video-converter/util"
 	"fmt"
+	"github.com/cli-ish/bbb-video-converter/internal/config"
+	"github.com/cli-ish/bbb-video-converter/internal/converter/modules"
+	"github.com/cli-ish/bbb-video-converter/internal/util"
 	"log"
 	"math"
 	"os"

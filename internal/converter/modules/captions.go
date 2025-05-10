@@ -1,11 +1,11 @@
 package modules
 
 import (
-	"bbb-video-converter/config"
-	"bbb-video-converter/converter/modules/langs"
-	"bbb-video-converter/util"
 	"encoding/json"
 	"fmt"
+	"github.com/cli-ish/bbb-video-converter/internal/config"
+	"github.com/cli-ish/bbb-video-converter/internal/converter/modules/langs"
+	"github.com/cli-ish/bbb-video-converter/internal/util"
 	"io"
 	"os"
 	"path"

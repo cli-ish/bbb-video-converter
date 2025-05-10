@@ -5,7 +5,7 @@ RUN apk update && apk add --no-cache git ca-certificates tzdata && update-ca-cer
 RUN mkdir -p /srv/bbb-convert /srv/bbb-convert/release
 WORKDIR /srv/bbb-convert
 COPY . .
-RUN go get -d -v
+RUN go mod download
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags='-w -s -extldflags "-static"' -a \
         -o /srv/bbb-convert/release/bbb-convert
 

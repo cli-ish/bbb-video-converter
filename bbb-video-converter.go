@@ -1,9 +1,9 @@
 package main
 
 import (
-	"bbb-video-converter/config"
-	"bbb-video-converter/converter"
 	"fmt"
+	"github.com/cli-ish/bbb-video-converter/internal/config"
+	"github.com/cli-ish/bbb-video-converter/internal/converter"
 	"log"
 	"os"
 	"time"
